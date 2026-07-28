@@ -48,6 +48,12 @@ terraform -chdir=aws output -raw t3_large_elastic_ip
 
 The IAM principal needs `ec2:AllocateAddress`, `ec2:AssociateAddress`, `ec2:DisassociateAddress`, `ec2:ReleaseAddress`, and `ec2:DescribeAddresses` permissions.
 
+## Automatic idle stop
+
+Terraform creates a CloudWatch alarm that stops the `t3.large` after six consecutive five-minute periods with average CPU utilization at or below 5% (30 minutes total). This is CPU-based inactivity: an active download or benchmark keeps the instance running, but an idle SSH session does not. Change `idle_cpu_threshold_percent` in `terraform.tfvars` if needed.
+
+Creating the alarm requires `cloudwatch:PutMetricAlarm`, `cloudwatch:DescribeAlarms`, and `cloudwatch:DeleteAlarms`. AWS also requires the `AWSServiceRoleForCloudWatchEvents` service-linked role for CloudWatch EC2 stop actions; creating it requires `iam:CreateServiceLinkedRole` if it does not already exist.
+
 ## EBS volume
 
 `terraform apply` also creates a standalone 80 GiB `gp3` EBS volume in the same Availability Zone as the EC2 instance. It is not attached to the instance. The IAM principal needs `ec2:CreateVolume`, `ec2:DescribeVolumes`, and `ec2:DeleteVolume` permissions to manage it.

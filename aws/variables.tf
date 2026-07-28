@@ -69,3 +69,14 @@ variable "ebs_volume_name" {
   type        = string
   default     = "t3-large-data-80gb"
 }
+
+variable "idle_cpu_threshold_percent" {
+  description = "Average CPU utilization at or below which the idle-stop alarm considers the instance inactive."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.idle_cpu_threshold_percent >= 0 && var.idle_cpu_threshold_percent <= 100
+    error_message = "idle_cpu_threshold_percent must be between 0 and 100."
+  }
+}
