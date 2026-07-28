@@ -22,6 +22,17 @@ variable "t3_key_name" {
   default     = "sanjoy-ed25519"
 }
 
+variable "t3_elastic_ip" {
+  description = "Pre-allocated Elastic IPv4 address to associate with the t3.large instance."
+  type        = string
+  default     = "52.11.67.245"
+
+  validation {
+    condition     = can(cidrnetmask("${var.t3_elastic_ip}/32"))
+    error_message = "t3_elastic_ip must be a valid IPv4 address."
+  }
+}
+
 variable "g6_spot_instance_name" {
   description = "Name tag for the g6.xlarge Spot instance."
   type        = string

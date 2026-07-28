@@ -15,7 +15,7 @@ output "public_ip" {
 
 output "t3_large_elastic_ip" {
   description = "Stable Elastic IP address associated with the t3.large instance."
-  value       = aws_eip.t3_large.public_ip
+  value       = data.aws_eip.t3_large.public_ip
 }
 
 output "ebs_volume_id" {
