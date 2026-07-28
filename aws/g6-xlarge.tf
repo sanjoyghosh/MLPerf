@@ -6,6 +6,10 @@ resource "aws_instance" "g6_xlarge_spot" {
   ami           = data.aws_ami.ubuntu_2404.id
   instance_type = "g6.xlarge"
 
+  root_block_device {
+    delete_on_termination = false
+  }
+
   instance_market_options {
     market_type = "spot"
 

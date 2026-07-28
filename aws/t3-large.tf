@@ -47,8 +47,11 @@ resource "aws_instance" "t3_large" {
   key_name               = var.t3_key_name
   vpc_security_group_ids = [aws_security_group.t3_large_ssh.id]
 
+  root_block_device {
+    delete_on_termination = false
+  }
+
   tags = merge(var.tags, {
     Name = var.instance_name
   })
 }
-
