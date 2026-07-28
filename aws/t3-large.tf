@@ -45,10 +45,16 @@ resource "aws_instance" "t3_large" {
   ami                    = data.aws_ami.ubuntu_2404.id
   instance_type          = "t3.large"
   key_name               = var.t3_key_name
+  subnet_id              = var.subnet_id
   vpc_security_group_ids = [aws_security_group.t3_large_ssh.id]
 
   root_block_device {
     delete_on_termination = false
+  }
+
+  # Reject plans that would replace or delete this persistent development VM.
+  lifecycle {
+    prevent_destroy = true
   }
 
   tags = merge(var.tags, {

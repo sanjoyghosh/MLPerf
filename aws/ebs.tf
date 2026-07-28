@@ -5,6 +5,10 @@ resource "aws_ebs_volume" "data" {
   size              = var.ebs_volume_size_gib
   type              = "gp3"
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   tags = merge(var.tags, {
     Name = var.ebs_volume_name
   })

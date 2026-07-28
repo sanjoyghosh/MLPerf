@@ -8,7 +8,10 @@ data "aws_eip" "t3_large" {
 }
 
 resource "aws_eip_association" "t3_large" {
-  allocation_id       = data.aws_eip.t3_large.id
-  instance_id         = aws_instance.t3_large.id
-  allow_reassociation = true
+  allocation_id = data.aws_eip.t3_large.id
+  instance_id   = aws_instance.t3_large.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }

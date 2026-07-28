@@ -8,6 +8,11 @@ output "g6_spot_instance_id" {
   value       = var.create_g6_spot_instance ? aws_instance.g6_xlarge_spot[0].id : null
 }
 
+output "g6_elastic_ip" {
+  description = "Reserved Elastic IP address for the g6.xlarge Spot instance."
+  value       = aws_eip.g6_xlarge.public_ip
+}
+
 output "public_ip" {
   description = "Public IPv4 address, if the selected default subnet assigns one."
   value       = aws_instance.t3_large.public_ip

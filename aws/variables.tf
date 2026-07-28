@@ -22,6 +22,12 @@ variable "t3_key_name" {
   default     = "sanjoy-ed25519"
 }
 
+variable "subnet_id" {
+  description = "Subnet used by both the T3 and G6 instances; it fixes them in the same Availability Zone."
+  type        = string
+  default     = "subnet-06d1a4d69d96304bf"
+}
+
 variable "t3_elastic_ip" {
   description = "Pre-allocated Elastic IPv4 address to associate with the t3.large instance."
   type        = string

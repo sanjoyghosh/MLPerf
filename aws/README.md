@@ -11,6 +11,8 @@ Run these commands from the repository root after `terraform apply` has created 
 
 The script reads the instance ID, AWS profile, and region from the Terraform configuration and state. The IAM principal also needs `ec2:StartInstances`, `ec2:StopInstances`, `ec2:TerminateInstances`, and `ec2:DescribeInstances` permissions. `terminate` permanently deletes the instance.
 
+Terraform protects managed EC2 instances, the standalone EBS volume, and managed Elastic IP resources with `prevent_destroy`. If a configuration change would replace or delete one of them, Terraform fails before making the change. To intentionally replace or destroy a protected resource, first remove its `prevent_destroy` lifecycle setting in Terraform, apply the intended change, then restore the guard.
+
 ## SSH key import
 
 Import the local `~/.ssh/id_ed25519.pub` key as `sanjoy-ed25519` in `us-west-2`:
@@ -84,7 +86,19 @@ The `g6.xlarge` one-time Spot instance is disabled by default. Create it explici
 terraform -chdir=aws apply -var='create_g6_spot_instance=true'
 ```
 
+Both instances use the shared `subnet_id` variable, which keeps them in the same Availability Zone as the standalone EBS volume. Change that subnet only when deliberately moving the whole setup to another Availability Zone.
+
 It uses the current official Ubuntu 24.04 LTS AMI. Spot capacity is not guaranteed, and AWS can interrupt and terminate the instance. A normal `terraform apply` does not create it.
+
+Terraform reserves a dedicated Elastic IP even while the G6 instance is disabled, then associates it when the G6 instance is created. Retrieve it with:
+
+```bash
+terraform -chdir=aws output -raw g6_elastic_ip
+```
+
+The reserved but unassociated Elastic IP incurs AWS Elastic IP charges.
+
+The G6 uses the same `sanjoy-ed25519` key pair and Terraform-managed SSH security group as the T3 instance. Connect to its `g6_elastic_ip` output as the `ubuntu` user.
 
 ```bash
 ./aws/ec2-g6-xlarge.sh status
