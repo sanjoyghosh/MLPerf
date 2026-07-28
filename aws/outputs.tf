@@ -5,12 +5,17 @@ output "instance_id" {
 
 output "g6_spot_instance_id" {
   description = "ID of the g6.xlarge Spot instance."
-  value       = aws_instance.g6_xlarge_spot.id
+  value       = var.create_g6_spot_instance ? aws_instance.g6_xlarge_spot[0].id : null
 }
 
 output "public_ip" {
   description = "Public IPv4 address, if the selected default subnet assigns one."
   value       = aws_instance.t3_micro.public_ip
+}
+
+output "t3_elastic_ip" {
+  description = "Stable Elastic IP address associated with the t3.micro instance."
+  value       = aws_eip.t3_micro.public_ip
 }
 
 output "ebs_volume_id" {

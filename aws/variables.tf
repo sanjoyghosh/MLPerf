@@ -28,6 +28,12 @@ variable "g6_spot_instance_name" {
   default     = "g6-xlarge-spot-oregon"
 }
 
+variable "create_g6_spot_instance" {
+  description = "Whether Terraform should create the g6.xlarge Spot instance."
+  type        = bool
+  default     = false
+}
+
 variable "ssh_allowed_cidr" {
   description = "Public IPv4 CIDR permitted to SSH to the t3.micro instance, typically your IP with /32."
   type        = string
