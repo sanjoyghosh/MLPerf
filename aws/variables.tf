@@ -13,11 +13,11 @@ variable "aws_profile" {
 variable "instance_name" {
   description = "Name tag for the EC2 instance."
   type        = string
-  default     = "t3-micro-oregon"
+  default     = "t3-large-oregon"
 }
 
 variable "t3_key_name" {
-  description = "Existing EC2 key pair for SSH access to the t3.micro instance."
+  description = "Existing EC2 key pair for SSH access to the t3.large instance."
   type        = string
   default     = "sanjoy-ed25519"
 }
@@ -35,7 +35,7 @@ variable "create_g6_spot_instance" {
 }
 
 variable "ssh_allowed_cidr" {
-  description = "Public IPv4 CIDR permitted to SSH to the t3.micro instance, typically your IP with /32."
+  description = "Public IPv4 CIDR permitted to SSH to the t3.large instance, typically your IP with /32."
   type        = string
 
   validation {
@@ -67,5 +67,5 @@ variable "ebs_volume_size_gib" {
 variable "ebs_volume_name" {
   description = "Name tag for the standalone EBS volume."
   type        = string
-  default     = "t3-micro-data-80gb"
+  default     = "t3-large-data-80gb"
 }

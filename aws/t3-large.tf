@@ -41,13 +41,19 @@ data "aws_ami" "ubuntu_2404" {
   }
 }
 
-resource "aws_instance" "t3_micro" {
+resource "aws_instance" "t3_large" {
   ami                    = data.aws_ami.ubuntu_2404.id
-  instance_type          = "t3.micro"
+  instance_type          = "t3.large"
   key_name               = var.t3_key_name
-  vpc_security_group_ids = [aws_security_group.t3_micro_ssh.id]
+  vpc_security_group_ids = [aws_security_group.t3_large_ssh.id]
 
   tags = merge(var.tags, {
     Name = var.instance_name
   })
+}
+
+# Preserve the existing instance in Terraform state when moving from t3.micro.
+moved {
+  from = aws_instance.t3_micro
+  to   = aws_instance.t3_large
 }
