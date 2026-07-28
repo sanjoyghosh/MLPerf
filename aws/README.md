@@ -62,6 +62,14 @@ Attach, detach, or inspect the volume with:
 
 `attach` uses `/dev/sdf` by default; supply a different device name as its second argument if needed. The IAM principal also needs `ec2:AttachVolume` and `ec2:DetachVolume`. On Nitro instances, the guest operating system can expose the attached device under an NVMe name rather than `/dev/sdf`.
 
+After connecting to the instance and confirming the guest device name with `lsblk`, format it only if needed, mount it, and add a UUID-based `/etc/fstab` entry:
+
+```bash
+sudo ./aws/attach-ebs.sh /dev/nvme1n1 /mnt/ebs
+```
+
+The script preserves an existing filesystem and its data. It formats a device that has no filesystem as `ext4`; pass the actual NVMe device name shown by `lsblk`.
+
 ## G6 Spot instance
 
 The `g6.xlarge` one-time Spot instance is disabled by default. Create it explicitly with:
