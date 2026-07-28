@@ -52,8 +52,3 @@ resource "aws_instance" "t3_large" {
   })
 }
 
-# Preserve the existing instance in Terraform state when moving from t3.micro.
-moved {
-  from = aws_instance.t3_micro
-  to   = aws_instance.t3_large
-}

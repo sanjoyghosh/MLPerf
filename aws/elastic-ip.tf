@@ -9,8 +9,3 @@ resource "aws_eip" "t3_large" {
   })
 }
 
-# Preserve the existing Elastic IP in Terraform state when moving from t3.micro.
-moved {
-  from = aws_eip.t3_micro
-  to   = aws_eip.t3_large
-}

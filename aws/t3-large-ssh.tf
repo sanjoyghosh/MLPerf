@@ -29,9 +29,3 @@ resource "aws_security_group" "t3_large_ssh" {
     Name = "${var.instance_name}-ssh"
   })
 }
-
-# Preserve the existing security group in Terraform state when moving from t3.micro.
-moved {
-  from = aws_security_group.t3_micro_ssh
-  to   = aws_security_group.t3_large_ssh
-}
