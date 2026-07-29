@@ -23,7 +23,7 @@ resource "aws_instance" "g6_xlarge_spot" {
 
     spot_options {
       spot_instance_type             = "persistent"
-      instance_interruption_behavior = "terminate"
+      instance_interruption_behavior = "stop"
     }
   }
 
