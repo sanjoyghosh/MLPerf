@@ -3,6 +3,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TERRAFORM_DIR="$SCRIPT_DIR/../terraform"
 ACTION="${1:-}"
 DEVICE_NAME="${2:-/dev/sdf}"
 
@@ -26,19 +27,19 @@ command -v terraform >/dev/null 2>&1 || {
   exit 1
 }
 
-INSTANCE_ID="$(terraform -chdir="$SCRIPT_DIR" output -raw instance_id 2>/dev/null)" || {
+INSTANCE_ID="$(terraform -chdir="$TERRAFORM_DIR" output -raw instance_id 2>/dev/null)" || {
   echo "Could not read instance_id from Terraform state. Run 'terraform apply' first." >&2
   exit 1
 }
-VOLUME_ID="$(terraform -chdir="$SCRIPT_DIR" output -raw ebs_volume_id 2>/dev/null)" || {
+VOLUME_ID="$(terraform -chdir="$TERRAFORM_DIR" output -raw ebs_volume_id 2>/dev/null)" || {
   echo "Could not read ebs_volume_id from Terraform state. Run 'terraform apply' first." >&2
   exit 1
 }
-AWS_PROFILE="$(terraform -chdir="$SCRIPT_DIR" console -no-color <<<'var.aws_profile' 2>/dev/null | tr -d '\"')" || {
+AWS_PROFILE="$(terraform -chdir="$TERRAFORM_DIR" console -no-color <<<'var.aws_profile' 2>/dev/null | tr -d '\"')" || {
   echo "Could not read aws_profile from Terraform configuration." >&2
   exit 1
 }
-AWS_REGION="$(terraform -chdir="$SCRIPT_DIR" console -no-color <<<'var.aws_region' 2>/dev/null | tr -d '\"')" || {
+AWS_REGION="$(terraform -chdir="$TERRAFORM_DIR" console -no-color <<<'var.aws_region' 2>/dev/null | tr -d '\"')" || {
   echo "Could not read aws_region from Terraform configuration." >&2
   exit 1
 }
