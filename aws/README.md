@@ -52,9 +52,9 @@ The IAM principal needs `ec2:AllocateAddress`, `ec2:AssociateAddress`, `ec2:Disa
 
 ## Automatic idle stop
 
-Terraform creates a CloudWatch alarm that stops the `t3.large` after six consecutive five-minute periods with average CPU utilization at or below 5% (30 minutes total). This is CPU-based inactivity: an active download or benchmark keeps the instance running, but an idle SSH session does not. Change `idle_cpu_threshold_percent` in `aws/terraform/terraform.tfvars` if needed.
+Terraform creates CloudWatch alarms that stop the `t3.large` after six consecutive five-minute periods with average CPU utilization at or below 5% (30 minutes total), and the enabled G6 after three such periods (15 minutes total). This is CPU-based inactivity: an active download or benchmark keeps the instance running, but an idle SSH session does not. Change `idle_cpu_threshold_percent` in `aws/terraform/terraform.tfvars` if needed.
 
-Creating the alarm requires `cloudwatch:PutMetricAlarm`, `cloudwatch:DescribeAlarms`, and `cloudwatch:DeleteAlarms`. AWS also requires the `AWSServiceRoleForCloudWatchEvents` service-linked role for CloudWatch EC2 stop actions; creating it requires `iam:CreateServiceLinkedRole` if it does not already exist.
+Creating the alarms requires `cloudwatch:PutMetricAlarm`, `cloudwatch:DescribeAlarms`, `cloudwatch:ListTagsForResource`, and `cloudwatch:DeleteAlarms`. AWS also requires the `AWSServiceRoleForCloudWatchEvents` service-linked role for CloudWatch EC2 stop actions; creating it requires `iam:CreateServiceLinkedRole` if it does not already exist.
 
 ## EBS volume
 
