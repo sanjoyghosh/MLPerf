@@ -108,3 +108,13 @@ The G6 uses the same `sanjoy-ed25519` key pair and Terraform-managed SSH securit
 ```
 
 `terminate` permanently deletes the G6 Spot instance. Its IAM principal needs `ec2:TerminateInstances`.
+
+## Run the Llama 3.1 8B vLLM benchmark
+
+After the model, dataset, MLPerf checkout, and Python environment have been prepared on `/mnt/ebs/Inference/Llama-3.1-8B`, run the Offline benchmark from the local machine:
+
+```bash
+./aws/cli/run_Llama_3_1_8B.sh
+```
+
+It starts the stopped G6, waits for it, refreshes the SSH host key for its Elastic IP, and runs the benchmark remotely. Set `MODEL_PATH`, `DATASET_PATH`, or `BATCH_SIZE` before running it to override the EBS defaults.
