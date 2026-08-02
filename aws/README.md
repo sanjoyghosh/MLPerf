@@ -9,6 +9,14 @@ Run these commands from the repository root after `terraform -chdir=aws/terrafor
 ./aws/cli/ec2-t3-large.sh terminate
 ```
 
+To start the T3 and mount the standalone data EBS volume when it is unattached:
+
+```bash
+./aws/cli/start_t3.sh
+```
+
+If the EBS volume is attached to another instance, the script performs a normal detach, waits for it to become available, then attaches it to the T3. Stop workloads using that volume first; the script intentionally does not force-detach it.
+
 The script reads the instance ID, AWS profile, and region from the Terraform configuration and state. The IAM principal also needs `ec2:StartInstances`, `ec2:StopInstances`, `ec2:TerminateInstances`, and `ec2:DescribeInstances` permissions. `terminate` permanently deletes the instance.
 
 Terraform protects managed EC2 instances, the standalone EBS volume, and managed Elastic IP resources with `prevent_destroy`. If a configuration change would replace or delete one of them, Terraform fails before making the change. To intentionally replace or destroy a protected resource, first remove its `prevent_destroy` lifecycle setting in Terraform, apply the intended change, then restore the guard.
